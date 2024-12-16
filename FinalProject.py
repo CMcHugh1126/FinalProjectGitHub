@@ -1,5 +1,5 @@
 import random
-import seaborn as sns
+import seaborn
 import matplotlib.pyplot as plt
 import threading
 import time
@@ -32,11 +32,11 @@ def get_random_number():
 # Function to evaluate rolls and determine if a player tuples out
 def evaluate_rolls(rolls):
     if len(set(rolls)) == 1:  
-        print("You rolled {} - Tupled out! You get zero points for this turn.".format(rolls))
+        print("You rolled {} - You tupled out. You get zero points for this turn.".format(rolls))
         return 0, True
     elif len(set(rolls)) == 2:  
         fixed_value = max(set(rolls), key=rolls.count)
-        print("You rolled {} - Pair detected! Fixed dice: {}".format(rolls, fixed_value))
+        print("You rolled {} - Pair detected. Fixed dice: {}".format(rolls, fixed_value))
         return sum(rolls), False
     else:  # All dice are different
         print("You rolled {}.".format(rolls))
@@ -79,7 +79,7 @@ def play_turn(player_name, current_score):
         score, tupled_out = evaluate_rolls(rolls)
         if tupled_out:  
             print("{} tupled out. No points earned.".format(player_name))
-            return current_score, time.time() - start_time  # Return score and elapsed time
+            return current_score, time.time() - start_time 
 
         # Calculate bonus points
         bonus = calculate_bonus(rolls)
@@ -92,7 +92,7 @@ def play_turn(player_name, current_score):
         if reroll == "no":
             total_score = current_score + score
             print("{} stops with a score of {} for this turn.".format(player_name, total_score))
-            return total_score, time.time() - start_time  # Return score and elapsed time
+            return total_score, time.time() - start_time  
 
         # Roll the remaining dice
         rolls = [get_random_number() for _ in rolls]
@@ -142,6 +142,7 @@ def play_game():
         player2_score -= 2
     else:
         print("\nBoth players took the same amount of time. No penalties applied.")
+    #Current penalty is at 2, however if more rounds are added, add more to the penalty
 
     # Return final scores
     return player1_score, player2_score
@@ -160,10 +161,10 @@ def announce_winner(player1_score, player2_score):
     print("Player 1's Final Score: {}".format(player1_score))
     print("Player 2's Final Score: {}".format(player2_score))
     if player1_score > player2_score:
-        print("Player 1 wins!")
+        print("Player 1 wins")
         return "Player 1"
     elif player2_score > player1_score:
-        print("Player 2 wins!")
+        print("Player 2 wins")
         return "Player 2"
     else:
         print("It's a tie!")
@@ -177,7 +178,7 @@ def announce_winner(player1_score, player2_score):
 # Function to visualize the roll frequency
 def visualize_rolls():
     print("\nVisualizing Dice Roll Frequencies")
-    sns.barplot(x=list(roll_frequency.keys()), y=list(roll_frequency.values()))
+    seaborn.barplot(x=list(roll_frequency.keys()), y=list(roll_frequency.values()))
     plt.title("Frequency of Dice Rolls")
     plt.xlabel("Dice Face")
     plt.ylabel("Frequency")
